@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cross Ventilation Through Window Sizes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+    }
+
+    header {
+      background-color: #00796b;
+      color: white;
+      padding: 20px 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    section {
+      padding: 20px;
+    }
+
+    input[type="file"] {
+      margin: 20px auto;
+      display: block;
+      padding: 10px;
+      background: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="file"]:hover {
+      background: #004d40;
+    }
+
+    #preview {
+      margin-top: 20px;
+    }
+
+    video, img {
+      max-width: 80%;
+      margin-top: 10px;
+      border: 2px solid #00796b;
+      border-radius: 5px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #004d40;
+      color: white;
+    }
+
+    #qr {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Cross Ventilation Through Window Sizes</h1>
+  </header>
+
+  <section>
+    <p>Upload your experiment photos or videos below to display them on this page.</p>
+    <input type="file" id="upload" accept="image/*,video/*" multiple>
+    <div id="preview"></div>
+
+    <div id="qr">
+      <h3>Scan QR to Visit This Page</h3>
+      <canvas id="qrcode"></canvas>
+    </div>
+  </section>
+
+  <footer>
+    <p>Created for Climatology Experiment Project</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script>
+    // File preview
+    const upload = document.getElementById('upload');
+    const preview = document.getElementById('preview');
+
+    upload.addEventListener('change', function() {
+      preview.innerHTML = '';
+      for (let file of this.files) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          if (file.type.startsWith('video')) {
+            const vid = document.createElement('video');
+            vid.src = e.target.result;
+            vid.controls = true;
+            preview.appendChild(vid);
+          } else if (file.type.startsWith('image')) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            preview.appendChild(img);
+          }
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // QR Code generator
+    const qr = new QRious({
+      element: document.getElementById('qrcode'),
+      value: window.location.href,
+      size: 150
+    });
+  </script>
+
+</body>
+</html>
